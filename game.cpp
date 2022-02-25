@@ -385,3 +385,39 @@ int GetViewPortTypeGame(void)
 {
 	return g_ViewPortType_Game;
 }
+
+//数値のクランプ。引数1:クランプしたい数値、引数2:最小値、引数3:最大値
+float FloatClamp(float x, float a, float b)
+{
+	if (x < a)
+	{
+		return a;
+	}
+	else if (x > b)
+	{
+		return b;
+	}
+	else
+	{
+		return x;
+	}
+}
+
+//float型の数値の比較をする。falgがFALSEなら小さい方を、TRUEなら大きい方を返す
+float FloatCompare(BOOL flag, float a, float b)
+{
+	float ans = 0.0f;//一応0.0fをセットしておく
+	switch (flag)
+	{
+	case FALSE:
+		if (a > b)return b;
+		else	  return a;
+		break;
+	case TRUE:
+		if (a > b)return a;
+		else	  return b;
+		break;
+	}
+
+	return ans;
+}
