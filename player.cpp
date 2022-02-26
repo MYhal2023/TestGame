@@ -24,9 +24,13 @@
 #define	VALUE_AT_MOVE		(4.0f)							// 移動量
 #define	VALUE_ROTATE		(XM_PI * 0.02f)					// 回転量
 
+#define	VALUE_SPDUP			(VALUE_MOVE*2)						// SPDUP時の移動量
+#define	VALUE_SPDDOWN		(VALUE_MOVE*0.5)					// SPDDOWN時の移動量
+
+
 #define PLAYER_SHADOW_SIZE	(1.0f)							// 影の大きさ
 #define PLAYER_OFFSET_Y		(0.0f)							// プレイヤーの足元をあわせる
-#define PLAYER_OFFSET_Z		(-300.0f)							// プレイヤーの足元をあわせる
+#define PLAYER_OFFSET_Z		(-300.0f)						// プレイヤーの足元をあわせる
 #define PLAYER_LIFE			(4)								// プレイヤーのライフ
 
 #define PLAYER_PARTS_MAX	(1)								// プレイヤーのパーツの数
@@ -148,7 +152,7 @@ void UpdatePlayer(void)
 	CAMERA *cam = GetCamera();
 	PlayerMoveControl();
 
-
+	PlayerSpeedControl();
 
 #ifdef _DEBUG
 	if (GetKeyboardPress(DIK_R))
@@ -182,6 +186,8 @@ void UpdatePlayer(void)
 		g_Player.pos.x = old_x;
 		g_Player.pos.z = old_z;
 	}
+
+
 
 	if (g_Player.atInvinc == TRUE)	//被ダメージによる無敵中にすることは？
 	{
@@ -354,5 +360,18 @@ void PlayerMoveControl(void)
 		g_Player.spd = VALUE_MOVE;
 		g_Player.moveVec.x -= sinf(cam->rot.y) * changeRotCamera;
 		g_Player.moveVec.z -= cosf(cam->rot.y) * changeRotCamera;
+	}
+}
+
+//プレイヤーの移動速度の変更
+void PlayerSpeedControl(void)
+{
+	if (IsButtonPressed(0, BUTTON_A))//Aボタンが押されたら移動速度を落とす
+	{
+		g_Player.spd = VALUE_SPDDOWN;
+	}
+	if (IsButtonPressed(0, BUTTON_X))//Xボタンが押されたら移動処理を落とす
+	{
+		g_Player.spd = VALUE_SPDUP;
 	}
 }
