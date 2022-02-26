@@ -77,3 +77,4 @@ PLAYER *GetPlayer(void);
 void SettingPlayer(void);
 void IncibleEffect(void);
 void PlayerMoveControl(void);
+void PlayerSpeedControl(void);
