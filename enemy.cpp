@@ -57,7 +57,7 @@ static INTERPOLATION_DATA move_tbl[] = {	// pos, rot, scl, frame
 //};
 
 //時間
-float					g_time;
+int					g_time;
 
 
 //=============================================================================
@@ -119,41 +119,22 @@ void UninitEnemy(void)
 //=============================================================================
 void UpdateEnemy(void)
 {
-	g_time += 1.0;
-	if (g_time > 200.0f)
-	{
-		g_time = 0.0f;
-	}
+	g_time += 1;
 	// エネミーを動かく場合は、影も合わせて動かす事を忘れないようにね！
 	for (int i = 0; i < MAX_ENEMY; i++)
 	{
 		if (g_Enemy[i].use != TRUE)	
-			continue;		// このエネミーが使われている？
+			continue;					// このエネミーが使われている？
+										//はい
+		BulletAttack(i);				//弾を出す
 
-										// Yes
-
-		PLAYER player=*GetPlayer();		//プレイヤーが動いている？
-		if (player.spd <= 0.1f)			//いいえ
+		PLAYER p = *GetPlayer();		//プレイヤーが動いている？
+		if (p.spd <= 0.1f)				
 			continue;
 
-										//はい
-		g_Enemy[i].moveVec = MoveEnemy(player.pos,i);
+		MoveEnemy(p.pos, i);			//はい。エネミーが動く
 
-		float angle = atan2f(g_Enemy[i].moveVec.x, g_Enemy[i].moveVec.z);
-		g_Enemy[i].rot.y = angle;
-
-		XMVECTOR	mVec = XMLoadFloat3(&g_Enemy[i].moveVec);
-		XMVector3Normalize(mVec);
-
-		XMVECTOR now = XMLoadFloat3(&g_Enemy[i].pos);								// 現在の場所
-		XMStoreFloat3(&g_Enemy[i].pos, now - mVec * ENEMY_SPEED);	//単位ベクトルを元に移動
-
-
-		if (g_time == 100.0f)
-		{
-			SetEnemyBullet(g_Enemy[i].pos, g_Enemy[i].rot);
-		}
-
+		//影
 		XMFLOAT3 pos = g_Enemy[i].pos;
 		pos.y -= (ENEMY_OFFSET_Y - 0.1f);
 		SetPositionShadow(g_Enemy[i].shadowIdx,pos);
@@ -215,20 +196,42 @@ void DrawEnemy(void)
 	SetCullingMode(CULL_MODE_BACK);
 }
 
+//=============================================================================
+// エネミーのバレット攻撃
+//とりあえず100フレーム経ったら弾を出す
+//=============================================================================
+void BulletAttack(int i)
+{
+	if (g_time % 100 == 0)
+	{
+		g_time = 0;										//大きな数字にならないため
+		SetEnemyBullet(g_Enemy[i].pos, g_Enemy[i].rot);
+	}
+}
 
 //=============================================================================
 // エネミーの動き
 //=============================================================================
-XMFLOAT3 MoveEnemy(XMFLOAT3 playerpos, int i)
+void MoveEnemy(XMFLOAT3 playerpos, int i)
 {
+
 	float dirX = g_Enemy[i].pos.x - playerpos.x;
 	float dirZ = g_Enemy[i].pos.z - playerpos.z;
+	
+	g_Enemy[i].moveVec = { dirX, 0.0f, dirZ };
 
-	XMFLOAT3	dir = {dirX, 0.0f, dirZ};
+	float angle = atan2f(g_Enemy[i].moveVec.x, g_Enemy[i].moveVec.z);
+	g_Enemy[i].rot.y = angle;
 
+	XMVECTOR	mVec = XMLoadFloat3(&g_Enemy[i].moveVec);
+	XMVector3Normalize(mVec);
 
-	return dir;
+	XMVECTOR now = XMLoadFloat3(&g_Enemy[i].pos);								// 現在の場所
+	XMStoreFloat3(&g_Enemy[i].pos, now - mVec * ENEMY_SPEED);	//単位ベクトルを元に移動
+
 }
+
+
 
 
 //=============================================================================

@@ -61,6 +61,7 @@ HRESULT InitEnemy(void);
 void UninitEnemy(void);
 void UpdateEnemy(void);
 void DrawEnemy(void);
-XMFLOAT3 MoveEnemy(XMFLOAT3 playerpos, int i);
+void BulletAttack(int i);
+void MoveEnemy(XMFLOAT3 playerpos,int i);
 
 ENEMY *GetEnemy(void);

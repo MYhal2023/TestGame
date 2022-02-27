@@ -42,6 +42,8 @@ HRESULT InitEnemyBullet(void);
 void UninitEnemyBullet(void);
 void UpdateEnemyBullet(void);
 void DrawEnemyBullet(void);
+void MoveEnemyBullet(int i);
+void DeleteEnemyBullet(int i);
 
 int SetEnemyBullet(XMFLOAT3 pos, XMFLOAT3 rot);
 

@@ -128,23 +128,12 @@ void UpdateEnemyBullet(void)
 		if (!g_Bullet[i].use)
 			continue;
 
-		g_Bullet[i].frames++;
-		// 弾の移動処理
-		g_Bullet[i].pos.x -= sinf(g_Bullet[i].rot.y) * g_Bullet[i].spd;
-		g_Bullet[i].pos.z -= cosf(g_Bullet[i].rot.y) * g_Bullet[i].spd;
+		MoveEnemyBullet(i);
 
 		// 影の位置設定
 		SetPositionShadow(g_Bullet[i].shadowIdx, XMFLOAT3(g_Bullet[i].pos.x, 0.1f, g_Bullet[i].pos.z));
 
-		PLAYER p = *GetPlayer();
-		// フィールドの外に出たら弾を消す処理
-		if (CollisionBB(g_Bullet[i].pos, g_Bullet[i].fHeight-7.0f, g_Bullet[i].fWidth-7.0f,p.pos, PLAYER_SIZE, PLAYER_SIZE)
-			|| g_Bullet[i].frames>300)
-		{
-			g_Bullet[i].frames = 0;
-			g_Bullet[i].use = FALSE;
-			ReleaseShadow(g_Bullet[i].shadowIdx);
-		}
+		DeleteEnemyBullet(i);
 	}
 
 }
@@ -285,6 +274,32 @@ int SetEnemyBullet(XMFLOAT3 pos, XMFLOAT3 rot)
 
 	return nIdxBullet;
 }
+
+
+//=============================================================================
+// 弾の動き
+//=============================================================================
+void MoveEnemyBullet(int i)
+{
+	g_Bullet[i].frames++;
+	g_Bullet[i].pos.x -= sinf(g_Bullet[i].rot.y) * g_Bullet[i].spd;
+	g_Bullet[i].pos.z -= cosf(g_Bullet[i].rot.y) * g_Bullet[i].spd;
+}
+
+//=============================================================================
+// 弾を消す
+//=============================================================================
+void DeleteEnemyBullet(int i)
+{
+	PLAYER p = *GetPlayer();
+	if (!CollisionBB(g_Bullet[i].pos, g_Bullet[i].fHeight - 7.0f, g_Bullet[i].fWidth - 7.0f, p.pos, PLAYER_SIZE, PLAYER_SIZE)		//プレイヤーとCollisionしたか
+		&& g_Bullet[i].frames < 300)							return;																			//300フレーム生きていたか
+	g_Bullet[i].frames = 0;
+	g_Bullet[i].use = FALSE;
+	ReleaseShadow(g_Bullet[i].shadowIdx);
+
+}
+
 
 //=============================================================================
 // 弾の取得
