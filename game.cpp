@@ -15,6 +15,8 @@
 #include "game.h"
 
 #include "player.h"
+#include "enemy.h"
+#include "enemybullet.h"
 #include "meshfield.h"
 #include "meshwall.h"
 #include "shadow.h"
@@ -63,8 +65,12 @@ HRESULT InitGame(void)
 		// ライトを有効化	// 影の初期化処理
 		InitShadow();
 
+		// エネミーの初期化
+		InitEnemy();
+
 		// プレイヤーの初期化
 		InitPlayer();
+
 
 		// 壁の初期化
 		InitMeshWall(XMFLOAT3(0.0f, WAVE_POS_Y, FIELD_Z_LIMIT), XMFLOAT3(0.0f, 0.0f, 0.0f),
@@ -86,6 +92,8 @@ HRESULT InitGame(void)
 		InitMeshWall(XMFLOAT3(0.0f, WAVE_POS_Y, -FIELD_Z_LIMIT), XMFLOAT3(0.0f, 0.0f, 0.0f),
 			XMFLOAT4(1.0f, 1.0f, 1.0f, 0.5f), WALL_XZ, WALL_Y, WALL_BLOCK_SIZE_XZ, WALL_BLOCK_SIZE_Y);
 
+		// エネミーバレットの初期化
+		InitEnemyBullet();
 
 		// スコアの初期化
 		InitScore();
@@ -173,6 +181,12 @@ void UpdateGame(void)
 	// プレイヤーの更新処理
 	UpdatePlayer();
 
+	//エネミーの更新処理
+	UpdateEnemy();
+
+	//エネミーバレットの更新処理
+	UpdateEnemyBullet();
+
 	UpdateLight();
 
 	// 影の更新処理
@@ -239,6 +253,12 @@ void DrawGame0(void)
 
 	// プレイヤーの描画処理
 	DrawPlayer();
+
+	// エネミーの描画処理
+	DrawEnemy();
+
+	// エネミーバレットの描画処理
+	DrawEnemyBullet();
 
 	// 壁の描画処理
 	DrawMeshWall();

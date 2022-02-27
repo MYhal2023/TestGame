@@ -12,6 +12,7 @@
 #include "debugproc.h"
 #include "model.h"
 #include "player.h"
+#include "enemy.h"
 #include "shadow.h"
 #include "light.h"
 #include "meshfield.h"
@@ -22,6 +23,7 @@
 #include "time.h"
 #include "sound.h"
 #include "particle.h"
+#include "enemybullet.h"
 
 #include "game.h"
 #include "result.h"
