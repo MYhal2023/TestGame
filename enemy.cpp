@@ -57,7 +57,7 @@ static INTERPOLATION_DATA move_tbl[] = {	// pos, rot, scl, frame
 //};
 
 //éûä‘
-int					g_time[MAX_ENEMY];
+int				g_time[MAX_ENEMY];
 
 //=============================================================================
 // èâä˙âªèàóù
@@ -66,6 +66,7 @@ HRESULT InitEnemy(void)
 {
 	for (int i = 0; i < MAX_ENEMY; i++)
 	{
+		g_time[i] = 0;
 		LoadModel(MODEL_ENEMY, &g_Enemy[i].model);
 		g_Enemy[i].load = TRUE;
 
