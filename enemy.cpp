@@ -57,7 +57,7 @@ static INTERPOLATION_DATA move_tbl[] = {	// pos, rot, scl, frame
 //};
 
 //時間
-int					g_time;
+int					g_time[MAX_ENEMY];
 
 //=============================================================================
 // 初期化処理
@@ -118,13 +118,13 @@ void UninitEnemy(void)
 //=============================================================================
 void UpdateEnemy(void)
 {
-	g_time++;
 	// エネミーを動かく場合は、影も合わせて動かす事を忘れないようにね！
 	for (int i = 0; i < MAX_ENEMY; i++)
 	{
 		if (g_Enemy[i].use != TRUE)	
 			continue;					// このエネミーが使われている？
 										//はい
+		g_time[i]++;
 		BulletAttack(i);				//弾を出す
 
 		PLAYER p = *GetPlayer();		//プレイヤーが動いている？
@@ -200,9 +200,9 @@ void DrawEnemy(void)
 //=============================================================================
 void BulletAttack(int i)
 {
-	if (g_time % 100 == 0)
+	if (g_time[i] == 100)
 	{
-		g_time = 0;										//大きな数字にならないため
+		g_time[i]=0;										//大きな数字にならないため
 		SetEnemyBullet(g_Enemy[i].pos, g_Enemy[i].rot);
 	}
 }

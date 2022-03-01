@@ -23,6 +23,7 @@
 
 #define	BULLET_SPEED		(4.0f)			// 弾の移動スピード
 
+#define	REDUCE_BULLET		(7.0f)			// 弾が小さくなるため
 
 //*****************************************************************************
 // 構造体定義
@@ -295,7 +296,7 @@ void MoveEnemyBullet(int i)
 void DeleteEnemyBullet(int i)
 {
 	PLAYER p = *GetPlayer();
-	if (!CollisionBB(g_Bullet[i].pos, g_Bullet[i].fHeight - 7.0f, g_Bullet[i].fWidth - 7.0f, p.pos, PLAYER_SIZE, PLAYER_SIZE)		//プレイヤーとCollisionしたか
+	if (!CollisionBB(g_Bullet[i].pos, g_Bullet[i].fHeight - REDUCE_BULLET, g_Bullet[i].fWidth - REDUCE_BULLET, p.pos, PLAYER_SIZE, PLAYER_SIZE)		//プレイヤーとCollisionしたか
 		&& g_Bullet[i].frames < 300)							return;																			//300フレーム生きていたか
 	g_Bullet[i].frames = 0;
 	g_Bullet[i].use = FALSE;
