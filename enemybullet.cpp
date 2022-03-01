@@ -48,7 +48,8 @@ static char *g_TextureName[TEXTURE_MAX] =
 	"data/TEXTURE/effect000.png",
 };
 
-static BOOL							g_Load = FALSE;
+static BOOL							
+g_Load = FALSE;
 
 
 //=============================================================================
@@ -129,11 +130,12 @@ void UpdateEnemyBullet(void)
 			continue;
 
 		MoveEnemyBullet(i);
+		DeleteEnemyBullet(i);
 
 		// âeÇÃà íuê›íË
 		SetPositionShadow(g_Bullet[i].shadowIdx, XMFLOAT3(g_Bullet[i].pos.x, 0.1f, g_Bullet[i].pos.z));
 
-		DeleteEnemyBullet(i);
+
 	}
 
 }
@@ -253,23 +255,24 @@ int SetEnemyBullet(XMFLOAT3 pos, XMFLOAT3 rot)
 
 	for (int nCntBullet = 0; nCntBullet < MAX_BULLET; nCntBullet++)
 	{
-		if (!g_Bullet[nCntBullet].use)
-		{
-			g_Bullet[nCntBullet].pos = pos;
-			g_Bullet[nCntBullet].rot = rot;
-			g_Bullet[nCntBullet].scl = { 1.0f, 1.0f, 1.0f };
-			g_Bullet[nCntBullet].use = TRUE;
+		if (g_Bullet[nCntBullet].use)
+			continue;
+		
+		g_Bullet[nCntBullet].pos = pos;
+		g_Bullet[nCntBullet].rot = rot;
+		g_Bullet[nCntBullet].scl = { 1.0f, 1.0f, 1.0f };
+		g_Bullet[nCntBullet].use = TRUE;
 
-			// âeÇÃê›íË
-			g_Bullet[nCntBullet].shadowIdx = CreateShadow(g_Bullet[nCntBullet].pos, 0.5f, 0.5f);
+		// âeÇÃê›íË
+		g_Bullet[nCntBullet].shadowIdx = CreateShadow(g_Bullet[nCntBullet].pos, 0.5f, 0.5f);
 
-			nIdxBullet = nCntBullet;
+		nIdxBullet = nCntBullet;
 
-			// î≠éÀâπ
-			//PlaySound(SOUND_LABEL_SE_shot000);
+		// î≠éÀâπ
+		//PlaySound(SOUND_LABEL_SE_shot000);
 
-			break;
-		}
+		break;
+		
 	}
 
 	return nIdxBullet;

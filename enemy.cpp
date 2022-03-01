@@ -59,7 +59,6 @@ static INTERPOLATION_DATA move_tbl[] = {	// pos, rot, scl, frame
 //時間
 int					g_time;
 
-
 //=============================================================================
 // 初期化処理
 //=============================================================================
@@ -119,7 +118,7 @@ void UninitEnemy(void)
 //=============================================================================
 void UpdateEnemy(void)
 {
-	g_time += 1;
+	g_time++;
 	// エネミーを動かく場合は、影も合わせて動かす事を忘れないようにね！
 	for (int i = 0; i < MAX_ENEMY; i++)
 	{
@@ -129,9 +128,8 @@ void UpdateEnemy(void)
 		BulletAttack(i);				//弾を出す
 
 		PLAYER p = *GetPlayer();		//プレイヤーが動いている？
-		if (p.spd <= 0.1f)				
+		if (!PlayerMove(p.spd))
 			continue;
-
 		MoveEnemy(p.pos, i);			//はい。エネミーが動く
 
 		//影
@@ -231,6 +229,14 @@ void MoveEnemy(XMFLOAT3 playerpos, int i)
 
 }
 
+BOOL PlayerMove(float spd)
+{
+	if (spd <= 0.1f)
+	{
+		return FALSE;
+	}
+	return TRUE;
+}
 
 
 

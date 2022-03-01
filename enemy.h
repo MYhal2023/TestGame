@@ -63,5 +63,6 @@ void UpdateEnemy(void);
 void DrawEnemy(void);
 void BulletAttack(int i);
 void MoveEnemy(XMFLOAT3 playerpos,int i);
+BOOL PlayerMove(float spd);
 
 ENEMY *GetEnemy(void);
