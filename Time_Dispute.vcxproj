@@ -147,6 +147,7 @@
     <ClCompile Include="meshwall.cpp" />
     <ClCompile Include="model.cpp" />
     <ClCompile Include="player.cpp" />
+    <ClCompile Include="player_bullet.cpp" />
     <ClCompile Include="renderer.cpp" />
     <ClCompile Include="result.cpp" />
     <ClCompile Include="score.cpp" />
@@ -173,6 +174,7 @@
     <ClInclude Include="meshwall.h" />
     <ClInclude Include="model.h" />
     <ClInclude Include="player.h" />
+    <ClInclude Include="player_bullet.h" />
     <ClInclude Include="renderer.h" />
     <ClInclude Include="result.h" />
     <ClInclude Include="score.h" />

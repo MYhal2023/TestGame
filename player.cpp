@@ -16,6 +16,7 @@
 #include "meshfield.h"
 #include "collision.h"
 #include "time.h"
+#include "player_bullet.h"
 
 //*****************************************************************************
 // マクロ定義
@@ -154,6 +155,7 @@ void UpdatePlayer(void)
 
 	PlayerSpeedControl();
 
+
 #ifdef _DEBUG
 	if (GetKeyboardPress(DIK_R))
 	{
@@ -176,6 +178,10 @@ void UpdatePlayer(void)
 	XMStoreFloat3(&g_Player.pos, now + XMVector3Normalize(moveVec) * g_Player.spd);	//単位ベクトルを元に移動
 
 
+
+	//プレイヤーのバレットをセット
+	if(IsButtonPressed(0, BUTTON_X))
+		SetPlayerBullet(g_Player.pos,g_Player.rot);
 
 	//メッシュフィールド範囲外に出ないようにする
 	if (g_Player.pos.x <= PLAYER_MIN_X ||
@@ -220,6 +226,8 @@ void UpdatePlayer(void)
 //=============================================================================
 void DrawPlayer(void)
 {
+
+
 	// カリング無効
 	SetCullingMode(CULL_MODE_NONE);
 
@@ -366,11 +374,14 @@ void PlayerMoveControl(void)
 //プレイヤーの移動速度の変更
 void PlayerSpeedControl(void)
 {
+	if(IsButtonPressed(0, BUTTON_A) && IsButtonPressed(0, BUTTON_B))
+		return;
+
 	if (IsButtonPressed(0, BUTTON_A))//Aボタンが押されたら移動速度を落とす
 	{
 		g_Player.spd = VALUE_SPDDOWN;
 	}
-	if (IsButtonPressed(0, BUTTON_X))//Xボタンが押されたら移動処理を落とす
+	if (IsButtonPressed(0, BUTTON_B))//Xボタンが押されたら移動処理を上げる
 	{
 		g_Player.spd = VALUE_SPDUP;
 	}

@@ -15,6 +15,8 @@
 #include "game.h"
 
 #include "player.h"
+#include "player_bullet.h"
+
 #include "meshfield.h"
 #include "meshwall.h"
 #include "shadow.h"
@@ -66,6 +68,9 @@ HRESULT InitGame(void)
 		// プレイヤーの初期化
 		InitPlayer();
 
+		//プレイヤーバレットの初期化
+		InitPlayerBullet();
+
 		// 壁の初期化
 		InitMeshWall(XMFLOAT3(0.0f, WAVE_POS_Y, FIELD_Z_LIMIT), XMFLOAT3(0.0f, 0.0f, 0.0f),
 			XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f), WALL_XZ, WALL_Y, WALL_BLOCK_SIZE_XZ, WALL_BLOCK_SIZE_Y);
@@ -115,6 +120,8 @@ HRESULT InitGame(void)
 //=============================================================================
 void UninitGame(void)
 {
+	//プレイヤーバレット終了処理
+	UninitPlayerBullet();
 
 	//UI表示終了処理
 	UninitInterface();
@@ -172,6 +179,9 @@ void UpdateGame(void)
 
 	// プレイヤーの更新処理
 	UpdatePlayer();
+
+	//プレイヤーバレットの更新処理
+	UpdatePlayerBullet();
 
 	UpdateLight();
 
@@ -239,6 +249,9 @@ void DrawGame0(void)
 
 	// プレイヤーの描画処理
 	DrawPlayer();
+
+	//プレイヤーバレットの描画処理
+	DrawPlayerBullet();
 
 	// 壁の描画処理
 	DrawMeshWall();
